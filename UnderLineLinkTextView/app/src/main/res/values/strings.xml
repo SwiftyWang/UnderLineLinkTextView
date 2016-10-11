@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">UnderLineLinkTextView</string>
+    <string name="linkString">购买须知,用户条款</string>
+    <string name="allString">我已核对付款金额，仔细阅读并同意购买须知及团购用户条款</string>
 </resources>

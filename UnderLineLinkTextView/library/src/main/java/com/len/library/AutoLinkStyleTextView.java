@@ -18,8 +18,9 @@ import android.widget.TextView;
  */
 public class AutoLinkStyleTextView extends TextView {
 
-    private static String DEFAULT_TEXT_VALUE = null;
-    private static int DEFAULT_COLOR = Color.parseColor("#f23218");
+    private final static int DEFAULT_COLOR = Color.parseColor("#f23218");
+    private String LINK_TEXT_VALUE = null;
+    private int LINK_TEXT_COLOR;
     private static boolean HAS_UNDER_LINE = true;
 
     private ClickCallBack mClickCallBack;
@@ -39,28 +40,28 @@ public class AutoLinkStyleTextView extends TextView {
 
     private void init(Context context, AttributeSet attrs, int defStyleAttr) {
         TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.AutoLinkStyleTextView, defStyleAttr, 0);
-        DEFAULT_TEXT_VALUE = typedArray.getString(R.styleable.AutoLinkStyleTextView_AutoLinkStyleTextView_text_value);
-        DEFAULT_COLOR = typedArray.getColor(R.styleable.AutoLinkStyleTextView_AutoLinkStyleTextView_default_color, DEFAULT_COLOR);
+        LINK_TEXT_VALUE = typedArray.getString(R.styleable.AutoLinkStyleTextView_AutoLinkStyleTextView_text_value);
+        LINK_TEXT_COLOR = typedArray.getColor(R.styleable.AutoLinkStyleTextView_AutoLinkStyleTextView_text_color, DEFAULT_COLOR);
         HAS_UNDER_LINE = typedArray.getBoolean(R.styleable.AutoLinkStyleTextView_AutoLinkStyleTextView_has_under_line, HAS_UNDER_LINE);
         addStyle();
     }
 
-    private void addStyle(){
-        if (!TextUtils.isEmpty(DEFAULT_TEXT_VALUE) && DEFAULT_TEXT_VALUE.contains(",")) {
-            String[] values = DEFAULT_TEXT_VALUE.split(",");
+    private void addStyle() {
+        if (!TextUtils.isEmpty(LINK_TEXT_VALUE)) {
+            final String[] values = LINK_TEXT_VALUE.split(",");
             SpannableString spannableString = new SpannableString(getText().toString().trim());
-            for (int i = 0; i < values.length; i++){
+            for (int i = 0; i < values.length; i++) {
                 final int position = i;
                 spannableString.setSpan(new ClickableSpan() {
                     @Override
                     public void onClick(View widget) {
-                        if (mClickCallBack != null) mClickCallBack.onClick(position);
+                        if (mClickCallBack != null) mClickCallBack.onClick(position, values[position]);
                     }
 
                     @Override
                     public void updateDrawState(TextPaint ds) {
                         super.updateDrawState(ds);
-                        ds.setColor(DEFAULT_COLOR);
+                        ds.setColor(LINK_TEXT_COLOR);
                         ds.setUnderlineText(HAS_UNDER_LINE);
                     }
                 }, getText().toString().trim().indexOf(values[i]), getText().toString().trim().indexOf(values[i]) + values[i].length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
@@ -71,11 +72,11 @@ public class AutoLinkStyleTextView extends TextView {
     }
 
 
-    public void setOnClickCallBack(ClickCallBack clickCallBack){
+    public void setOnClickCallBack(ClickCallBack clickCallBack) {
         this.mClickCallBack = clickCallBack;
     }
 
-    public interface ClickCallBack{
-        void onClick(int position);
+    public interface ClickCallBack {
+        void onClick(int position, String clickText);
     }
 }
