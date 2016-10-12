@@ -3,9 +3,12 @@
 
     <!--AutoLinkStyleTextView-->
     <declare-styleable name="AutoLinkStyleTextView">
-        <attr name="AutoLinkStyleTextView_text_value" format="string|reference"/>
-        <attr name="AutoLinkStyleTextView_text_color" format="color|reference"/>
-        <attr name="AutoLinkStyleTextView_has_under_line" format="boolean"/>
+        <attr name="link_text_value" format="string|reference"/>
+        <attr name="link_text_color" format="color|reference"/>
+        <attr name="link_text_bg_color" format="color|reference"/>
+        <attr name="link_text_click_bg_color" format="color|reference"/>
+        <attr name="link_text_click_bg_auto_invalidate" format="boolean"/>
+        <attr name="link_has_under_line" format="boolean"/>
     </declare-styleable>
 
 </resources>

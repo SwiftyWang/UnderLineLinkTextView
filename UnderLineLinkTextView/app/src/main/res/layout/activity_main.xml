@@ -17,9 +17,11 @@
         android:layout_height="wrap_content"
         android:text="@string/allString"
         android:textSize="16sp"
-        app:AutoLinkStyleTextView_text_color="@android:color/darker_gray"
-        app:AutoLinkStyleTextView_has_under_line="true"
-        app:AutoLinkStyleTextView_text_value="@string/linkString"
+        app:link_has_under_line="true"
+        app:link_text_click_bg_auto_invalidate="false"
+        app:link_text_click_bg_color="@color/colorPrimaryDark"
+        app:link_text_color="@color/colorAccent"
+        app:link_text_value="@string/linkString"
         />
 
 </RelativeLayout>

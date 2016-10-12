@@ -21,7 +21,10 @@ public class AutoLinkStyleTextView extends TextView {
     private final static int DEFAULT_COLOR = Color.parseColor("#f23218");
     private String LINK_TEXT_VALUE = null;
     private int LINK_TEXT_COLOR;
-    private static boolean HAS_UNDER_LINE = true;
+    private int LINK_TEXT_BG_COLOR;
+    private int LINK_TEXT_CLICK_BG_COLOR;
+    private boolean LINK_TEXT_CLICK_BG_COLOR_AUTO_INVALIDATE;
+    private boolean HAS_UNDER_LINE = true;
 
     private ClickCallBack mClickCallBack;
 
@@ -40,9 +43,12 @@ public class AutoLinkStyleTextView extends TextView {
 
     private void init(Context context, AttributeSet attrs, int defStyleAttr) {
         TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.AutoLinkStyleTextView, defStyleAttr, 0);
-        LINK_TEXT_VALUE = typedArray.getString(R.styleable.AutoLinkStyleTextView_AutoLinkStyleTextView_text_value);
-        LINK_TEXT_COLOR = typedArray.getColor(R.styleable.AutoLinkStyleTextView_AutoLinkStyleTextView_text_color, DEFAULT_COLOR);
-        HAS_UNDER_LINE = typedArray.getBoolean(R.styleable.AutoLinkStyleTextView_AutoLinkStyleTextView_has_under_line, HAS_UNDER_LINE);
+        LINK_TEXT_VALUE = typedArray.getString(R.styleable.AutoLinkStyleTextView_link_text_value);
+        LINK_TEXT_COLOR = typedArray.getColor(R.styleable.AutoLinkStyleTextView_link_text_color, DEFAULT_COLOR);
+        LINK_TEXT_BG_COLOR = typedArray.getColor(R.styleable.AutoLinkStyleTextView_link_text_bg_color, Color.TRANSPARENT);
+        LINK_TEXT_CLICK_BG_COLOR = typedArray.getColor(R.styleable.AutoLinkStyleTextView_link_text_click_bg_color, Color.TRANSPARENT);
+        LINK_TEXT_CLICK_BG_COLOR_AUTO_INVALIDATE = typedArray.getBoolean(R.styleable.AutoLinkStyleTextView_link_text_click_bg_auto_invalidate, true);
+        HAS_UNDER_LINE = typedArray.getBoolean(R.styleable.AutoLinkStyleTextView_link_has_under_line, HAS_UNDER_LINE);
         addStyle();
     }
 
@@ -56,11 +62,13 @@ public class AutoLinkStyleTextView extends TextView {
                     @Override
                     public void onClick(View widget) {
                         if (mClickCallBack != null) mClickCallBack.onClick(position, values[position]);
+                        if (LINK_TEXT_CLICK_BG_COLOR_AUTO_INVALIDATE) widget.invalidate();
                     }
 
                     @Override
                     public void updateDrawState(TextPaint ds) {
-                        super.updateDrawState(ds);
+                        ds.bgColor = LINK_TEXT_BG_COLOR;
+                        setHighlightColor(LINK_TEXT_CLICK_BG_COLOR);
                         ds.setColor(LINK_TEXT_COLOR);
                         ds.setUnderlineText(HAS_UNDER_LINE);
                     }
