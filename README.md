@@ -1,4 +1,18 @@
 # UnderLineLinkTextView
+
+Support Maven:
+```gradle
+allprojects {
+		repositories {
+			...
+			maven { url "https://jitpack.io" }
+		}
+	}
+dependencies {
+	compile 'com.github.SwiftyWang:UnderLineLinkTextView:2.02'
+}
+```
+
 Support some of the key words can be clicked with the underline TextView<br>
 ```xml
     <declare-styleable name="AutoLinkStyleTextView">
