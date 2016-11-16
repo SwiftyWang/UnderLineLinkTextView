@@ -10,6 +10,7 @@ import android.text.TextUtils;
 import android.text.method.LinkMovementMethod;
 import android.text.style.ClickableSpan;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
@@ -19,6 +20,7 @@ import android.widget.TextView;
 public class AutoLinkStyleTextView extends TextView {
 
     private final static int DEFAULT_COLOR = Color.parseColor("#f23218");
+    private static final String TAG = AutoLinkStyleTextView.class.getSimpleName();
     private String LINK_TEXT_VALUE = null;
     private int LINK_TEXT_COLOR;
     private int LINK_TEXT_BG_COLOR;
@@ -53,29 +55,33 @@ public class AutoLinkStyleTextView extends TextView {
     }
 
     private void addStyle() {
-        if (!TextUtils.isEmpty(LINK_TEXT_VALUE)) {
-            final String[] values = LINK_TEXT_VALUE.split(",");
-            SpannableString spannableString = new SpannableString(getText().toString().trim());
-            for (int i = 0; i < values.length; i++) {
-                final int position = i;
-                spannableString.setSpan(new ClickableSpan() {
-                    @Override
-                    public void onClick(View widget) {
-                        if (mClickCallBack != null) mClickCallBack.onClick(position, values[position]);
-                        if (LINK_TEXT_CLICK_BG_COLOR_AUTO_INVALIDATE) widget.invalidate();
-                    }
+        try {
+            if (!TextUtils.isEmpty(LINK_TEXT_VALUE)) {
+                final String[] values = LINK_TEXT_VALUE.split(",");
+                SpannableString spannableString = new SpannableString(getText().toString().trim());
+                for (int i = 0; i < values.length; i++) {
+                    final int position = i;
+                    spannableString.setSpan(new ClickableSpan() {
+                        @Override
+                        public void onClick(View widget) {
+                            if (mClickCallBack != null) mClickCallBack.onClick(position, values[position]);
+                            if (LINK_TEXT_CLICK_BG_COLOR_AUTO_INVALIDATE) widget.invalidate();
+                        }
 
-                    @Override
-                    public void updateDrawState(TextPaint ds) {
-                        ds.bgColor = LINK_TEXT_BG_COLOR;
-                        setHighlightColor(LINK_TEXT_CLICK_BG_COLOR);
-                        ds.setColor(LINK_TEXT_COLOR);
-                        ds.setUnderlineText(HAS_UNDER_LINE);
-                    }
-                }, getText().toString().trim().indexOf(values[i]), getText().toString().trim().indexOf(values[i]) + values[i].length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+                        @Override
+                        public void updateDrawState(TextPaint ds) {
+                            ds.bgColor = LINK_TEXT_BG_COLOR;
+                            setHighlightColor(LINK_TEXT_CLICK_BG_COLOR);
+                            ds.setColor(LINK_TEXT_COLOR);
+                            ds.setUnderlineText(HAS_UNDER_LINE);
+                        }
+                    }, getText().toString().trim().indexOf(values[i]), getText().toString().trim().indexOf(values[i]) + values[i].length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+                }
+                setText(spannableString);
+                setMovementMethod(LinkMovementMethod.getInstance());
             }
-            setText(spannableString);
-            setMovementMethod(LinkMovementMethod.getInstance());
+        } catch (Exception e) {
+            Log.w(TAG, e);
         }
     }
 
