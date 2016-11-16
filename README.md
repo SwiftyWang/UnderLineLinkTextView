@@ -1,22 +1,43 @@
 # UnderLineLinkTextView
+
+Support Maven:
+```gradle
+allprojects {
+		repositories {
+			...
+			maven { url "https://jitpack.io" }
+		}
+	}
+dependencies {
+	compile 'com.github.SwiftyWang:UnderLineLinkTextView:2.02'
+}
+```
+
 Support some of the key words can be clicked with the underline TextView<br>
 ```xml
     <declare-styleable name="AutoLinkStyleTextView">
-        <attr name="AutoLinkStyleTextView_text_value" format="string|reference"/>//key word with color and underline, and split with ','(en)
-        <attr name="AutoLinkStyleTextView_default_color" format="color|reference"/>//word and underline's color
-        <attr name="AutoLinkStyleTextView_has_under_line" format="boolean"/>//underline with true and false
+        <attr name="link_text_value" format="string|reference"/>
+        <attr name="link_text_color" format="color|reference"/>
+        <attr name="link_text_bg_color" format="color|reference"/>
+        <attr name="link_text_click_bg_color" format="color|reference"/>
+        <attr name="link_text_click_bg_auto_invalidate" format="boolean"/>
+        <attr name="link_has_under_line" format="boolean"/>
     </declare-styleable>
 ```
 <br>
 use, for example:<br>
 ```xml
-    <xx.AutoLinkStyleTextView
-        android:id="@+id/tv_clause"
+    <com.len.library.AutoLinkStyleTextView
+        android:id="@+id/tv"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="我已核对付款金额，仔细阅读并同意“购买须知”及约克论坛团购“用户条款”"
+        android:text="@string/allString"
         android:textSize="16sp"
-        app:AutoLinkStyleTextView_text_value="“购买须知”,“用户条款”"
+        app:link_has_under_line="true"
+        app:link_text_click_bg_auto_invalidate="false"
+        app:link_text_click_bg_color="@color/colorPrimaryDark"
+        app:link_text_color="@color/colorAccent"
+        app:link_text_value="@string/linkString"
         />
 ```
 ```java
